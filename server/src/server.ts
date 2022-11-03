@@ -18,15 +18,35 @@ async function bootstrap(){
         origin:true,
     })
 
-    //http://localhost:3333/pools/count
+    //http://localhost:3333/pools/count - contagem de bolões
     fastify.get("/pools/count", async () => {
     
-     const count = await prisma.pool.count()
+     const count = await prisma.user.count()
 
         return { count }
 
     })
 
+    //contagem de palpites
+    fastify.get("/guesses/count", async () => {
+    
+        const count = await prisma.guess.count()
+   
+           return { count }
+   
+       })
+
+    //contagem de usuarios 
+    fastify.get("/users/count", async () => {
+    
+        const count = await prisma.pool.count()
+   
+           return { count }
+   
+       })
+
+
+    //criar bolão
     fastify.post("/pools", async (request, reply) => {
 
         const createPoolBody = z.object({
