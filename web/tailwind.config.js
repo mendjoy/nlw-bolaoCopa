@@ -10,7 +10,16 @@ module.exports = {
       },
 
       colors:{
-        gray :{
+        ignite: {
+          500:'#129E57',
+        },
+
+        yellow: {
+          500: '#F7DD43',
+        },
+
+        gray:{
+          100: '#E1E1E6',
           900: '#121214'
         }
       }
