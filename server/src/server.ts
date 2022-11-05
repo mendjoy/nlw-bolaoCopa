@@ -21,7 +21,7 @@ async function bootstrap(){
     //http://localhost:3333/pools/count - contagem de bolões
     fastify.get("/pools/count", async () => {
     
-     const count = await prisma.user.count()
+     const count = await prisma.pool.count()
 
         return { count }
 
@@ -39,7 +39,7 @@ async function bootstrap(){
     //contagem de usuarios 
     fastify.get("/users/count", async () => {
     
-        const count = await prisma.pool.count()
+        const count = await prisma.user.count()
    
            return { count }
    
