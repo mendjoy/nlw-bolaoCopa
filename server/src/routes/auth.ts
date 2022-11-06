@@ -53,6 +53,8 @@ export async function authRoutes(fastify: FastifyInstance){
 
     
 
+
+
     return { userInfo }
 
    })
