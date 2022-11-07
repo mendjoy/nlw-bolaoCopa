@@ -65,7 +65,7 @@ export async function poolRoutes(fastify: FastifyInstance){
    })
 
    //entrar em um bolão (ja auntenticado)
-   fastify.post("/pools/:id/join", {
+   fastify.post("/pools/join", {
     onRequest: [authenticate]
    }, async (request, reply) => {
 
@@ -165,6 +165,50 @@ export async function poolRoutes(fastify: FastifyInstance){
 
    })
    
+   //mostrar dados detalhados do bolão
+   fastify.get("/pools/:id", {
+    onRequest: [authenticate], 
+   }, async (request) => {
+
+    const getPoolParams = z.object({
+        id: z.string(),
+    })
+
+    const { id } = getPoolParams.parse(request.params)
+
+    const pool  = await prisma.pool.findUnique({
+        where:{
+           id,
+        },
+        include:{ //mostra a contagem de participantes 
+            _count:{
+                select:{
+                    participants:true,
+                }
+            },
+            participants:{ //retorna o id dos ultimos 4 participantes
+                select:{
+                    id: true,
+                    user: { //retorna a imagem dos participantes
+                        select:{
+                            avatarUrl: true,
+                        }
+                    },
+                },
+                take:4,
+            },
+            owner: { //mostra quem é o dono do bolão
+                select:{
+                    id: true,
+                    name:true,
+                }
+            }
+        }
+    })
+
+    return { pool }
+
+   })
 }
 
 
