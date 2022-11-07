@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify"
 import { prisma } from "../lib/prisma"
 
-export function guessRoutes(fastify: FastifyInstance){
+export async function guessRoutes(fastify: FastifyInstance){
 
    //contagem de palpites
    fastify.get("/guesses/count", async () => {
