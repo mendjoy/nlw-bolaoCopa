@@ -2,7 +2,6 @@ import { FastifyInstance } from "fastify"
 import { prisma } from "../lib/prisma"
 import { z } from "zod"
 import ShortUniqueId from  "short-unique-id"
-import jwt from "@fastify/jwt"
 import { authenticate } from "../plugins/authenticate"
 
 export async function poolRoutes(fastify: FastifyInstance){
@@ -124,8 +123,48 @@ export async function poolRoutes(fastify: FastifyInstance){
 
    })
 
-   
+   //bolões que o usuario participa
+   fastify.get("/pools", {
+    onRequest: [authenticate]
+   }, async (request) => {
+    const pools  = await prisma.pool.findMany({
+        where:{
+            participants:{
+                some:{
+                    userId: request.user.sub,
+                }
+            }
+        },
+        include:{ //mostra a contagem de participantes 
+            _count:{
+                select:{
+                    participants:true,
+                }
+            },
+            participants:{ //retorna o id dos ultimos 4 participantes
+                select:{
+                    id: true,
+                    user: { //retorna a imagem dos participantes
+                        select:{
+                            avatarUrl: true,
+                        }
+                    },
+                },
+                take:4,
+            },
+            owner: { //mostra quem é o dono do bolão
+                select:{
+                    id: true,
+                    name:true,
+                }
+            }
+        }
+    })
 
+    return{ pools }
+
+   })
+   
 }
 
 
