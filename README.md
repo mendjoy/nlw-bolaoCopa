@@ -9,5 +9,4 @@ Trilha ignite NLW () Copa da RocketSeat.
         <li>React Native</li>
         <li>TypeScript</li>
         <li>Prisma</li>
-        
     </ul>
